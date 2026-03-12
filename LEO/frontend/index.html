@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OncoPredict | Breast Cancer Target Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="upload-active">
+    <div class="glass-bg"></div>
+
+    <nav>
+        <div class="logo">
+            <span class="pulse">🔬</span>
+            <h1>OncoPredict</h1>
+        </div>
+        <div class="nav-status">
+            <span id="backend-status" class="status-dot"></span>
+            <span id="status-text">Connecting...</span>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Page 1: Upload View -->
+        <div id="page-upload" class="page-view active">
+            <div class="glass-card upload-box centered-upload">
+                <div class="upload-header-center">
+                    <i class="fas fa-microscope upload-hero-icon"></i>
+                    <h2>Prioritize Targets</h2>
+                    <p>Upload a .txt file containing your gene list to identify the top 20 therapeutic targets.</p>
+                </div>
+                <div class="upload-form">
+                    <div class="file-drop-area" id="drop-area">
+                        <i class="fas fa-file-upload"></i>
+                        <span>Click or Drag .txt file</span>
+                        <input type="file" id="gene-file" accept=".txt">
+                    </div>
+                    <button id="upload-btn">
+                        <i class="fas fa-brain"></i> Rank DNA Targets
+                    </button>
+                    <div id="file-info" class="file-name-display hidden">
+                        <div class="file-info-content">
+                            <i class="fas fa-file-alt"></i>
+                            <span id="selected-file-name"></span>
+                            <button id="remove-file-btn" class="remove-btn" title="Remove file">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Dashboard View -->
+        <div id="page-dashboard" class="page-view hidden">
+            <div class="dashboard-topbar">
+                <button id="back-btn" class="secondary-btn"><i class="fas fa-arrow-left"></i> New Upload</button>
+                <div class="glass-card legend-inline">
+                    <span class="legend-title">Classification Key:</span>
+                    <div class="legend-item">
+                        <span class="color-box oncogenic"></span>
+                        <span>High-risk (Oncogenic)</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="color-box protective"></span>
+                        <span>Protective / Low-risk</span>
+                    </div>
+                </div>
+            </div>
+
+            <section class="content full-width">
+                <div class="grid-layout">
+                    <!-- Stats Row -->
+                    <div class="glass-card chart-container large">
+                        <div class="card-header">
+                            <h3>Target Score Distribution</h3>
+                            <span class="badge">Live AI Ranking</span>
+                        </div>
+                        <canvas id="scoreChart"></canvas>
+                    </div>
+
+                    <div class="glass-card results-table-container">
+                        <div class="card-header">
+                            <h3>Analysis Results</h3>
+                            <div class="header-actions">
+                                <button class="icon-btn" id="export-csv">
+                                    <i class="fas fa-download"></i> Export
+                                </button>
+                                <button class="icon-btn" id="clear-results">
+                                    <i class="fas fa-trash-alt"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-scroll">
+                            <table id="results-table">
+                                <thead>
+                                    <tr>
+                                        <th>Gene</th>
+                                        <th>Target Score</th>
+                                        <th>Hazard Ratio</th>
+                                        <th>FDR</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be injected here -->
+                                    <tr class="empty-row">
+                                        <td colspan="5">Upload a gene list to see results...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="loader" class="hidden">
+        <div class="spinner"></div>
+        <p>Analyzing Bio-Data...</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
